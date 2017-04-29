@@ -1,14 +1,24 @@
+<div class="main">
+  <div class="wrapper">
 <h1 class="title">DICTIONARY OF EARTH</h1>
-<div class="outline"></div>
-<div class="description">
-  Develop a creative way for the public and scientists alike to learn the
-  definitions of Earth-related scientific and technical terms, using the
-  power of crowdsourcing.
-</div>
+<div class="outline"></div><BR>
+  <div align="left">
+      <div class="description">
+          Develop a creative way for the public and scientists alike to learn the
+          definitions of Earth-related scientific and technical terms, using the
+          power of crowdsourcing.
+  </div>
+      </div>
 
+<div class="left-block">
 <div class="search">
+<<<<<<< HEAD
+  <input placeholder="Type a word..." #searchInput/>
+  <button (click)="search(searchInput.value)" class="btn-search">Search</button>
+=======
   <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
   <button (click)="search(searchInput.value)">Search</button>
+>>>>>>> origin
 </div>
 
 <div class="search-result-container">
@@ -23,7 +33,28 @@
 </div>
 
 <div class="top-five">
-    <li *ngFor="let rec of topFive">
-      {{rec.search}}
+  <ol>
+    <li *ngFor="let str of topFive">
+      <span (click)="search(str)">{{str}}</span>
     </li>
+  </ol>
+</div>
+</div>
+
+<div class="right-block">
+  <div class="most-popular blocks">
+    <h2>Popular queries</h2>
+    <!-- Ul Li elements for example -->
+    <ul><li>One</li>
+        <li>Two</li>
+    </ul>
+  </div>
+  <div class="add blocks">
+    <h2>Add words</h2>
+    Lorem ipsum
+    
+  </div>
+</div>
+
+  </div>
 </div>
