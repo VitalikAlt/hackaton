@@ -39,8 +39,11 @@
   width: 20%;
 }
 
-.search-result{
+.search-result-container{
   border: 1px solid grey;
   margin-top: 10px;
+  padding: 10px 10px;
   width: 55%;
+  max-heigh: 400px;
+
 }

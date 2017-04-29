@@ -7,14 +7,17 @@
 </div>
 
 <div class="search">
-  <input placeholder="Поиск..." #searchInput/>
+  <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
   <button (click)="search(searchInput.value)">Search</button>
 </div>
 
-<div class="search-result">
-  <ul style="marker:none;">
-    <li *ngFor="let str of searchResult">
-      <span>{{str}}</span>
-    </li>
-  </ul>
+<div class="search-result-container">
+  <div *ngIf="notFound">
+    <span>Results not found</span>
+    <br>
+    <a href="http://google.com">Try to find it in Google</a>
+  </div>
+  <div *ngFor="let str of searchResult">
+    <span>{{str}}</span>
+  </div>
 </div>

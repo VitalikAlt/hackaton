@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpService} from './services/http.service';
 
 @Component({
@@ -6,22 +6,51 @@ import { HttpService} from './services/http.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   searchResult: string[];
+  notFound: boolean;
+  searchHelp: string[];
+  topFive: string[];
 
+
+  ngOnInit(){
+    this.getTopFive();
+  }
 
   constructor (private httpService: HttpService) {}
 
+  onSearchInputChanged(value: string){
+    this.searchHelp = new Array();
+  }
+
   search(searchInput: string) : void {
-    if (!searchInput) { console.log("searchInput is undefined"); return;}
+
+    if (!searchInput) return;
 
     this.httpService.getSearchResult(searchInput)
       .subscribe
-      (result => {this.searchResult = result; console.log('!!!!!!!!!!!', result);},
-        error => console.log(error));
+      (result =>{
+          if (result.length > 0){
+            this.searchResult = result;
+            this.notFound = false;
+          }
+          else {
+            this.notFound = true;
+            this.searchResult = [""];
+          }
+        }
+      ),
+      error => console.error(error)
+  };
 
-    console.log(this.searchResult);
+  getTopFive() : void{
+    this.httpService.getTopFive()
+      .subscribe
+      (
+        result => this.topFive = result,
+        error => console.error(error)
+      )
   }
 
 }

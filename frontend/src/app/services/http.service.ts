@@ -33,11 +33,27 @@ export class HttpService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
+    let url = this.baseUrl + 'search';
+
     return this.http
-      .post(this.baseUrl + 'search', JSON.stringify({ searchParam }), options)
+      .post(url, JSON.stringify({ searchParam }), options)
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getTopFive() : Observable<string[]>{
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let url = this.baseUrl + 'top';
+
+    return this.http
+      .post(url, [], options) // maybe get request is better??
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
 
 
 
