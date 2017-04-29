@@ -1,31 +1,57 @@
-<h1 class="title">DICTIONARY OF EARTH</h1>
-<div class="outline"></div>
-<div class="description">
-  Develop a creative way for the public and scientists alike to learn the
-  definitions of Earth-related scientific and technical terms, using the
-  power of crowdsourcing.
-</div>
+<div class="main">
+  <div class="wrapper">
+    <h1 class="title">DICTIONARY OF EARTH</h1>
+    <div class="outline"></div>
+    <BR>
+    <div align="left">
+      <div class="description">
+        Develop a creative way for the public and scientists alike to learn the
+        definitions of Earth-related scientific and technical terms, using the
+        power of crowdsourcing.
+      </div>
+    </div>
 
-<div class="search">
-  <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
-  <button (click)="search(searchInput.value)">Search</button>
-</div>
+    <div class="left-block">
+      <div class="search">
+        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
+        <button (click)="search(searchInput.value)" class="btn-search">Search</button>
+      </div>
 
-<div class="search-result-container">
-  <div *ngIf="notFound">
-    <span>Results not found</span>
-    <br>
-    <a href="http://google.com">Try to find it in Google</a>
+      <div class="search-result-container">
+        <div *ngIf="notFound">
+          <span>Results not found</span>
+          <br>
+          <a href="http://google.com">Try to find it in Google</a>
+        </div>
+        <div *ngFor="let str of searchResult">
+          <span>{{str}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-five">
+      <ul>
+        <li *ngFor="let str of topFive">
+          <span (click)="search(str)">{{str}}</span>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div *ngFor="let str of searchResult">
-    <span>{{str}}</span>
-  </div>
-</div>
 
-<div class="top-five">
-  <ol>
-    <li *ngFor="let str of topFive">
-      <span (click)="search(str)">{{str}}</span>
-    </li>
-  </ol>
+  <div class="right-block">
+    <div class="most-popular blocks">
+      <h2>Popular queries</h2>
+      <!-- Ul Li elements for example -->
+      <ul>
+        <li>One</li>
+        <li>Two</li>
+      </ul>
+    </div>
+    <div class="add blocks">
+      <h2>Add words</h2>
+      Lorem ipsum
+
+    </div>
+  </div>
+
 </div>
