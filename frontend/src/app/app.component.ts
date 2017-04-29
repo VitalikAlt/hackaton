@@ -36,6 +36,7 @@ export class AppComponent implements OnInit{
           if (result.length > 0){
             this.searchResult = result;
             this.notFound = false;
+            this.getTopFive();
           }
           else {
             this.notFound = true;
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit{
     this.httpService.getTopFive()
       .subscribe
       (
-        result => this.topFive = result,
+        result => this.topFive = result.reverse(),
         error => console.error(error)
       )
   }

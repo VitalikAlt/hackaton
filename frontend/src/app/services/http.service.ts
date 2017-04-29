@@ -26,14 +26,9 @@ export class HttpService {
     return Observable.throw(errMsg);
   }
 
-  private extractSearchData (res: Response) {
+  private extractData (res: Response) {
     let body = res.json();
     return body || { };
-  }
-
-  private extractTopFiveData (res: Response) {
-    let body = res.json();
-    return body as Record[];
   }
 
   getSearchResult(searchParam: string) : Observable<string[]>{
@@ -44,7 +39,7 @@ export class HttpService {
 
     return this.http
       .post(url, JSON.stringify({ searchParam }), options)
-      .map(this.extractSearchData)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 
@@ -56,7 +51,7 @@ export class HttpService {
 
     return this.http
       .get(url, options)
-      .map(this.extractTopFiveData)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 

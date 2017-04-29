@@ -45,13 +45,9 @@ var HttpService = (function () {
         console.error(errMsg);
         return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].throw(errMsg);
     };
-    HttpService.prototype.extractSearchData = function (res) {
+    HttpService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
-    };
-    HttpService.prototype.extractTopFiveData = function (res) {
-        var body = res.json();
-        return body;
     };
     HttpService.prototype.getSearchResult = function (searchParam) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json' });
@@ -59,7 +55,7 @@ var HttpService = (function () {
         var url = this.baseUrl + 'search';
         return this.http
             .post(url, JSON.stringify({ searchParam: searchParam }), options)
-            .map(this.extractSearchData)
+            .map(this.extractData)
             .catch(this.handleError);
     };
     HttpService.prototype.getTopFive = function () {
@@ -68,7 +64,7 @@ var HttpService = (function () {
         var url = this.baseUrl + 'top';
         return this.http
             .get(url, options)
-            .map(this.extractTopFiveData)
+            .map(this.extractData)
             .catch(this.handleError);
     };
     return HttpService;
@@ -155,6 +151,7 @@ var AppComponent = (function () {
             if (result.length > 0) {
                 _this.searchResult = result;
                 _this.notFound = false;
+                _this.getTopFive();
             }
             else {
                 _this.notFound = true;
@@ -167,7 +164,7 @@ var AppComponent = (function () {
     AppComponent.prototype.getTopFive = function () {
         var _this = this;
         this.httpService.getTopFive()
-            .subscribe(function (result) { return _this.topFive = result; }, function (error) { return console.error(error); });
+            .subscribe(function (result) { return _this.topFive = result.reverse(); }, function (error) { return console.error(error); });
     };
     return AppComponent;
 }());
@@ -273,7 +270,7 @@ module.exports = module.exports.toString();
 /***/ 213:
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n<div class=\"outline\"></div>\r\n<div class=\"description\">\r\n  Develop a creative way for the public and scientists alike to learn the\r\n  definitions of Earth-related scientific and technical terms, using the\r\n  power of crowdsourcing.\r\n</div>\r\n\r\n<div class=\"search\">\r\n  <input (keyup)=\"onSearchInputChanged(searchInput.value)\" placeholder=\"Поиск...\" #searchInput/>\r\n  <button (click)=\"search(searchInput.value)\">Search</button>\r\n</div>\r\n\r\n<div class=\"search-result-container\">\r\n  <div *ngIf=\"notFound\">\r\n    <span>Results not found</span>\r\n    <br>\r\n    <a href=\"http://google.com\">Try to find it in Google</a>\r\n  </div>\r\n  <div *ngFor=\"let str of searchResult\">\r\n    <span>{{str}}</span>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"top-five\">\r\n    <li *ngFor=\"let rec of topFive\">\r\n      {{rec.search}}\r\n    </li>\r\n</div>\r\n"
+module.exports = "<h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n<div class=\"outline\"></div>\r\n<div class=\"description\">\r\n  Develop a creative way for the public and scientists alike to learn the\r\n  definitions of Earth-related scientific and technical terms, using the\r\n  power of crowdsourcing.\r\n</div>\r\n\r\n<div class=\"search\">\r\n  <input (keyup)=\"onSearchInputChanged(searchInput.value)\" placeholder=\"Поиск...\" #searchInput/>\r\n  <button (click)=\"search(searchInput.value)\">Search</button>\r\n</div>\r\n\r\n<div class=\"search-result-container\">\r\n  <div *ngIf=\"notFound\">\r\n    <span>Results not found</span>\r\n    <br>\r\n    <a href=\"http://google.com\">Try to find it in Google</a>\r\n  </div>\r\n  <div *ngFor=\"let str of searchResult\">\r\n    <span>{{str}}</span>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"top-five\">\r\n  <ol>\r\n    <li *ngFor=\"let str of topFive\">\r\n      <span (click)=\"search(str)\">{{str}}</span>\r\n    </li>\r\n  </ol>\r\n</div>\r\n"
 
 /***/ }),
 

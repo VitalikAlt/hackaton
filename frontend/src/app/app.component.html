@@ -23,7 +23,9 @@
 </div>
 
 <div class="top-five">
-    <li *ngFor="let rec of topFive">
-      {{rec.search}}
+  <ol>
+    <li *ngFor="let str of topFive">
+      <span (click)="search(str)">{{str}}</span>
     </li>
+  </ol>
 </div>
