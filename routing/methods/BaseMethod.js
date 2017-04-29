@@ -10,7 +10,6 @@ class BaseMethod {
         let last = url.substr(url.lastIndexOf('/') + 1);
         last = last.charAt(0).toUpperCase() + last.substr(1);
         url = url.substr(0, url.lastIndexOf('/') + 1) + last;
-        console.log(url.indexOf('.') !== -1);
         url = (url === '/' || url.indexOf('.') !== -1)? '/index' : url;
 
         return `/${this.req.method.toLowerCase()}` + url;

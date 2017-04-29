@@ -14,16 +14,16 @@ class Test extends BaseRoute {
         let result = [], count = 0;
         const folders = fs.readdirSync('./base');
         for(let i = 0; i < folders.length; i++) {
-            fs.readFile(`./base/${folders[i]}/${this.params.text[0].toUpperCase()}`, 'utf-8', (err, data) => {
+            fs.readFile(`./base/${folders[i]}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, data) => {
                 if (err)
                     return console.log(err);
 
                 data = JSON.parse(data);
 
                 for (let key in data) {
-                    const cattedKey = key.substr(0, this.params.text.length);
+                    const cattedKey = key.substr(0, this.params.searchParam.length);
 
-                    if (cattedKey === this.params.text)
+                    if (cattedKey === this.params.searchParam)
                         result.push(...data[key])
                 }
 
