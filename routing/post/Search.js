@@ -16,8 +16,14 @@ class SearchRoute extends BaseRoute {
         const folders = fs.readdirSync('./base');
         for(let i = 0; i < folders.length; i++) {
             fs.readFile(`./base/${folders[i]}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, data) => {
-                if (err)
+                if (err) {
+                    count++;
+
+                    if (count === folders.length)
+                        return this.complete(result);
+
                     return console.log(err);
+                }
 
                 data = JSON.parse(data);
 
