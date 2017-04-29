@@ -1,0 +1,12 @@
+<h1>
+</h1>
+<input placeholder="Поиск..." #searchInput/>
+<button (click)="search(searchInput.value)">Search</button>
+
+<div class="search-result">
+  <ul style="marker:none;">
+    <li *ngFor="let str of searchResult">
+      <span>{{str}}</span>
+    </li>
+  </ul>
+</div>
