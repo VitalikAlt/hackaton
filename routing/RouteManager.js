@@ -20,7 +20,6 @@ class RouteManager {
         if (err) return null;
 
         let pathToHandler = method.getPathToHandler(req);
-        console.log(pathToHandler)
 
         try {
             const Action = require(appRoot + `/routing/${pathToHandler}`);
