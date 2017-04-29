@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService} from './services/http.service';
 
+import { Record } from './record'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +13,7 @@ export class AppComponent implements OnInit{
   searchResult: string[];
   notFound: boolean;
   searchHelp: string[];
-  topFive: string[];
+  topFive: Record[];
 
 
   ngOnInit(){
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit{
       error => console.error(error)
   };
 
-  getTopFive() : void{
+  getTopFive() : void {
     this.httpService.getTopFive()
       .subscribe
       (

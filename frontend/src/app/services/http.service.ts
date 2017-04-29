@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import  { Headers, Http, Response, RequestOptions } from '@angular/http';
 
+import { Record } from '../record'
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch'
@@ -24,9 +26,14 @@ export class HttpService {
     return Observable.throw(errMsg);
   }
 
-  private extractData(res: Response) {
+  private extractSearchData (res: Response) {
     let body = res.json();
     return body || { };
+  }
+
+  private extractTopFiveData (res: Response) {
+    let body = res.json();
+    return body as Record[];
   }
 
   getSearchResult(searchParam: string) : Observable<string[]>{
@@ -37,19 +44,19 @@ export class HttpService {
 
     return this.http
       .post(url, JSON.stringify({ searchParam }), options)
-      .map(this.extractData)
+      .map(this.extractSearchData)
       .catch(this.handleError);
   }
 
-  getTopFive() : Observable<string[]>{
+  getTopFive() : Observable<Record[]>{
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     let url = this.baseUrl + 'top';
 
     return this.http
-      .post(url, [], options) // maybe get request is better??
-      .map(this.extractData)
+      .get(url, options)
+      .map(this.extractTopFiveData)
       .catch(this.handleError);
   }
 
