@@ -27,30 +27,32 @@
           <span>{{str}}</span>
         </div>
       </div>
+
+
+      <div class="top-five">
+        <ul>
+          <li *ngFor="let str of topFive">
+            <span (click)="search(str)">{{str}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <div class="top-five">
-      <ul>
-        <li *ngFor="let str of topFive">
-          <span (click)="search(str)">{{str}}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
 
-  <div class="right-block">
-    <div class="most-popular blocks">
-      <h2>Popular queries</h2>
-      <!-- Ul Li elements for example -->
-      <ul>
-        <li>One</li>
-        <li>Two</li>
-      </ul>
-    </div>
-    <div class="add blocks">
-      <h2>Add words</h2>
-      Lorem ipsum
+    <div class="right-block">
+      <div class="most-popular blocks">
+        <h2>Popular queries</h2>
+        <!-- Ul Li elements for example -->
+        <ul>
+          <li>One</li>
+          <li>Two</li>
+        </ul>
+      </div>
+      <div class="add blocks">
+        <h2>Add words</h2>
+        Lorem ipsum
 
+      </div>
     </div>
   </div>
 
