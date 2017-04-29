@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/VitalikAlt/node-server-template#readme",
   "dependencies": {
-    "log4js": "^1.1.1"
+    "log4js": "^1.1.1",
+    "mongoose": "^4.9.6"
   },
   "devDependencies": {
     "node-watch": "^0.5.2"

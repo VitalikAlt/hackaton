@@ -1,3 +1,5 @@
+const Db = require('./../db/Db');
+
 class Environment {
     constructor() {
         this.core = {};
@@ -13,6 +15,7 @@ class Environment {
         this.initEnv();
         this.initLog();
         this.initConfigs();
+        this.initDb();
     }
 
     initEnv() {
@@ -40,6 +43,16 @@ class Environment {
             this.core.log.info('Init configs success');
         } catch (err) {
             console.log('Init Configs error:', err);
+        }
+    }
+
+    initDb() {
+        try {
+            Db.connect('mongodb://localhost:27017');
+            this.core.db = Db;
+            this.core.log.info('Init db success');
+        } catch (err) {
+            this.core.log.info('Init db error: ', err);
         }
     }
 }
