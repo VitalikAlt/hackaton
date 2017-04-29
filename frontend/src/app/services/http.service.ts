@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class HttpService {
 
-  private baseUrl = '';
+  private baseUrl = 'http://localhost:8080/';
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -18,7 +18,7 @@ export class HttpService {
 
   getSearchResult(searchParam: string) : Promise<string[]>{
     return this.http
-      .post(this.baseUrl, JSON.stringify({searchParam : searchParam}), {headers : this.headers})
+      .post(this.baseUrl + 'search', JSON.stringify({searchParam : searchParam}), {headers : this.headers})
       .toPromise()
       .then(result => result.json().data as string[])
       .catch (this.handleError);

@@ -7,7 +7,7 @@ class Test extends BaseRoute {
     }
 
     get paramNames() {
-        return ['text'];
+        return ['searchParam'];
     }
 
     handle() {
