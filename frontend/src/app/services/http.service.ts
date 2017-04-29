@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import  { Headers, Http, Response } from '@angular/http';
+import  { Headers, Http, Response, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,8 +9,6 @@ import 'rxjs/add/operator/catch'
 export class HttpService {
 
   private baseUrl = 'http://localhost:8080/';
-  private headers = new Headers({'Content-Type': 'application/json'});
-
   constructor(private http: Http) { }
 
   private handleError (error: Response | any) {
@@ -28,12 +26,15 @@ export class HttpService {
 
   private extractData(res: Response) {
     let body = res.json();
-    return body.data || { };
+    return body || { };
   }
 
   getSearchResult(searchParam: string) : Observable<string[]>{
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
     return this.http
-      .post(this.baseUrl + 'search', JSON.stringify({searchParam : searchParam}), {headers : this.headers})
+      .post(this.baseUrl + 'search', JSON.stringify({ searchParam }), options)
       .map(this.extractData)
       .catch(this.handleError);
   }

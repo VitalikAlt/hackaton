@@ -14,10 +14,13 @@ export class AppComponent {
   constructor (private httpService: HttpService) {}
 
   search(searchInput: string) : void {
+    if (!searchInput) { console.log("searchInput is undefined"); return;}
+
     this.httpService.getSearchResult(searchInput)
       .subscribe
-      (result => this.searchResult = result,
-        error => console.log(error))
+      (result => {this.searchResult = result; console.log('!!!!!!!!!!!', result);},
+        error => console.log(error));
+
     console.log(this.searchResult);
   }
 
