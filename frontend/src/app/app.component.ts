@@ -15,7 +15,10 @@ export class AppComponent {
 
   search(searchInput: string) : void {
     this.httpService.getSearchResult(searchInput)
-      .then (answer => this.searchResult = answer)
+      .subscribe
+      (result => this.searchResult = result,
+        error => console.log(error))
+    console.log(this.searchResult);
   }
 
 }

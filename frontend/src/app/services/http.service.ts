@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import  { Headers, Http } from '@angular/http';
+import  { Headers, Http, Response } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch'
 
 @Injectable()
 export class HttpService {
@@ -11,17 +13,29 @@ export class HttpService {
 
   constructor(private http: Http) { }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+  private handleError (error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 
-  getSearchResult(searchParam: string) : Promise<string[]>{
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
+
+  getSearchResult(searchParam: string) : Observable<string[]>{
     return this.http
       .post(this.baseUrl + 'search', JSON.stringify({searchParam : searchParam}), {headers : this.headers})
-      .toPromise()
-      .then(result => result.json().data as string[])
-      .catch (this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
 

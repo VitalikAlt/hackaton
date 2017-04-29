@@ -111,6 +111,7 @@ var AppComponent = (function () {
         var _this = this;
         this.httpService.getSearchResult(searchInput)
             .then(function (answer) { return _this.searchResult = answer; });
+        console.log(this.searchResult);
     };
     return AppComponent;
 }());
@@ -203,7 +204,7 @@ exports = module.exports = __webpack_require__(70)(false);
 
 
 // module
-exports.push([module.i, ".title {\r\n  font-size: 40px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.outline {\r\n  width: 400px;\r\n  height: 3px;\r\n  background-color: seagreen;\r\n  border-radius: 3px;\r\n}\r\n\r\n.description {\r\n  margin-top: 10px;\r\n  font-size: 16px;\r\n  letter-spacing: 1px;\r\n  width: 490px;\r\n}\r\n\r\n.search {\r\n  width: 660px;\r\n  background-color: gainsboro;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 10px;\r\n}\r\n\r\n.search-result{\r\n  border: 1px solid grey;\r\n  margin-top: 10px;\r\n  width: 800px;\r\n}\r\n", ""]);
+exports.push([module.i, ".title {\r\n  font-size: 40px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.outline {\r\n  width: 400px;\r\n  height: 3px;\r\n  background-color: seagreen;\r\n  border-radius: 3px;\r\n}\r\n\r\n.description {\r\n  margin-top: 10px;\r\n  font-size: 16px;\r\n  letter-spacing: 1px;\r\n  width: 490px;\r\n}\r\n\r\n.search {\r\n  width: 55%;\r\n  background-color: gainsboro;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 20px 15px;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 5px;\r\n  height: 15%;\r\n  width: 80%;\r\n}\r\n\r\n.search button{\r\n  width: 20%;\r\n}\r\n\r\n.search-result{\r\n  border: 1px solid grey;\r\n  margin-top: 10px;\r\n  width: 55%;\r\n}\r\n", ""]);
 
 // exports
 
