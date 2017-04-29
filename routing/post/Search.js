@@ -1,7 +1,7 @@
 const fs = require('fs');
 const BaseRoute = require(appRoot + '/routing/BaseRoute');
 
-class Test extends BaseRoute {
+class SearchRoute extends BaseRoute {
     constructor(core, req, res, params) {
         super(core, req, res, params);
     }
@@ -48,4 +48,4 @@ class Test extends BaseRoute {
     }
 }
 
-module.exports = Test;
+module.exports = SearchRoute;
