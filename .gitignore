@@ -9,5 +9,5 @@ node_modules
 #idea files
 .idea
 
-static/node_modules
-static/.idea
+frontend/node_modules
+frontend/.idea
