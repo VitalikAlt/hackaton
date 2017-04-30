@@ -13,7 +13,7 @@ export class AppComponent implements OnInit{
 
   searchResult: SearchResult[]; // overall search results
   searchFirstRow: SearchResult[]; // first row search result
-  searchSecondRow: SearchResult[]; // second row
+  searchSecondRow: SearchResult[]; // second row search result
 
   notFound: boolean;
   searchHelp: string[];
@@ -33,7 +33,9 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.getTopFive();
     this.newKey = '';
-    this.searchResult = [];
+    //this.searchResult = [];
+    this.searchFirstRow = [];
+    this.searchSecondRow = [];
   }
 
   constructor (
@@ -74,24 +76,29 @@ export class AppComponent implements OnInit{
     this.httpService.getSearchResult(searchInput)
       .subscribe(result => {
           if (result.length > 0){
-            this.searchResult = result;
+            //this.searchResult = result;
             this.notFound = false;
+            this.searchFirstRow = new Array();
+            this.searchSecondRow = new Array();
+            for (let i = 0; i < result.length; i++){
+              if (i % 2 == 0)
+                this.searchSecondRow.push(result[i]);
+              else
+                this.searchFirstRow.push(result[i]);
+            }
             this.getTopFive();
           }
           else {
             this.notFound = true;
-            this.searchResult = [];
+            //this.searchResult = [];
+            this.searchSecondRow = [];
+            this.searchFirstRow = [];
           }
         }, error => console.error(error))
 
-    this.searchFirstRow = new Array();
-    this.searchSecondRow = new Array();
-    for (let i = 0; i < this.searchResult.length; i++){
-      if (i % 2 == 0)
-        this.searchSecondRow.push(this.searchResult[i]);
-      else
-        this.searchFirstRow.push(this.searchResult[i]);
-    }
+
+
+
 
 
   };

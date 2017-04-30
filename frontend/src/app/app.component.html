@@ -12,7 +12,7 @@
 
     <div class="left-block">
       <div class="search">
-        <input (keyup)="onSearchInputChanged(searchText)" placeholder="Type the word..." #searchInput/>
+        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Type the word..." #searchInput/>
         <button (click)="search(searchInput.value)" class="btn-search">Search</button>
         <div *ngIf="searchInput.value">
           <div *ngFor="let str of searchHelp">
@@ -27,22 +27,26 @@
           <br>
           <a href="http://google.com">Try to find it in Google</a>
         </div>
-        <div class="key-result-container" *ngFor="let sr of searchFirstRow">
-          <span><b>{{sr.key}}</b></span>
-          <div class="value-container">
-            <div class="value" *ngFor="let value of sr.value">
-              <span>{{value}}</span>
+        <div class="key-result-row">
+          <div class="key-result-container" *ngFor="let sr of searchFirstRow">
+            <span><b>{{sr.key}}</b></span>
+            <div class="value-container">
+              <div class="value" *ngFor="let value of sr.value">
+                <span>{{value}}</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="key-result-container" *ngFor="let sr of searchSecondRow">
-          <span><b>{{sr.key}}</b></span>
-          <div class="value-container">
-            <div class="value" *ngFor="let value of sr.value">
-              <span>{{value}}</span>
-            </div>
-          </div>
-        </div>
+       <div class="key-result-row">
+         <div class="key-result-container" *ngFor="let sr of searchSecondRow">
+           <span><b>{{sr.key}}</b></span>
+           <div class="value-container">
+             <div class="value" *ngFor="let value of sr.value">
+               <span>{{value}}</span>
+             </div>
+           </div>
+         </div>
+       </div>
       </div>
 
     </div>
@@ -103,7 +107,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="file" (change)="fileChangedEvent($event)" class="btn-search" placeholder="Upload file"/>
+    <input type="file" (change)="fileChangedEvent($event)" class="btn-search" />
   </div>
   <div class="modal-footer">
     <span style="margin-right: 10px">{{uploadHelper}}</span>
