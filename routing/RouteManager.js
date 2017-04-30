@@ -6,6 +6,7 @@ class RouteManager {
     }
 
     async handle(req, res) {
+        let params = [], err;
         this.core.log.debug(`Get ${req.method} request: ${req.url}`);
         req.sendError = this.sendError.bind(this);
 
@@ -15,9 +16,12 @@ class RouteManager {
         }
 
         let method = new Methods[req.method](req, res);
-        let [params, err] = await method.getRequestParams();
 
-        if (err) return null;
+        if (req.url !== '/upload') {
+            [params, err] = await method.getRequestParams();
+
+            if (err) return null;
+        }
 
         let pathToHandler = method.getPathToHandler(req);
 
