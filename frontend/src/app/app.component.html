@@ -54,7 +54,9 @@
         </div>
 
         <div class="upload-file">
-          <button (click)="search(searchInput.value)" class="btn-search">Upload file</button>
+          <input type="file" (change)="fileChangedEvent($event)" class="btn-search" placeholder="Upload file"/>
+          <button type="button" (click)="upload()">Upload</button>
+          <!--<ng2-file-input>Upload</ng2-file-input>-->
         </div>
       </div>
     </div>

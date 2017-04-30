@@ -49,6 +49,28 @@ var HttpService = (function () {
         var body = res.json();
         return body || {};
     };
+    HttpService.prototype.makeFileRequest = function (files) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var formData = new FormData();
+            var xhr = new XMLHttpRequest();
+            for (var i = 0; i < files.length; i++) {
+                formData.append("uploads[]", files[i], files[i].name);
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response));
+                    }
+                    else {
+                        reject(xhr.response);
+                    }
+                }
+            };
+            xhr.open("POST", _this.baseUrl + 'upload', true);
+            xhr.send(formData);
+        });
+    };
     HttpService.prototype.getSearchResult = function (searchParam) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json' });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
@@ -148,6 +170,16 @@ var AppComponent = (function () {
     AppComponent.prototype.ngOnInit = function () {
         this.getTopFive();
     };
+    AppComponent.prototype.fileChangedEvent = function (fileInput) {
+        this.filesToUpload = fileInput.target.files;
+    };
+    AppComponent.prototype.upload = function () {
+        this.httpService.makeFileRequest(this.filesToUpload).then(function (result) {
+            console.log(result);
+        }, function (error) {
+            console.error(error);
+        });
+    };
     AppComponent.prototype.search = function (searchInput) {
         var _this = this;
         if (!searchInput)
@@ -163,8 +195,7 @@ var AppComponent = (function () {
                 _this.notFound = true;
                 _this.searchResult = [""];
             }
-        }),
-            function (error) { return console.error(error); };
+        }, function (error) { return console.error(error); });
     };
     ;
     AppComponent.prototype.getTopFive = function () {
@@ -234,7 +265,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot()
+            __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_5__services_http_service__["a" /* HttpService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
@@ -270,7 +301,7 @@ exports = module.exports = __webpack_require__(70)(false);
 
 
 // module
-exports.push([module.i, ".title {\r\n  font-size: 40px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.outline {\r\n  width: 400px;\r\n  height: 3px;\r\n  background-color: seagreen;\r\n  border-radius: 3px;\r\n}\r\n\r\n.description {\r\n  margin-top: 10px;\r\n  font-size: 16px;\r\n  letter-spacing: 1px;\r\n  width: 490px;\r\n}\r\n\r\n.search {\r\n  width: 55%;\r\n  background-color: gainsboro;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 20px 15px;\r\n  -ms-flex-wrap: wrap;\r\n      flex-wrap: wrap;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 5px;\r\n  height: 15%;\r\n  width: 80%;\r\n}\r\n\r\n.search button{\r\n  width: 20%;\r\n}\r\n\r\n.search-result-container{\r\n  border: 1px solid grey;\r\n  margin-top: 10px;\r\n  padding: 10px 10px;\r\n  width: 55%;\r\n  max-heigh: 400px;\r\n\r\n}\r\n\r\n", ""]);
+exports.push([module.i, ".title {\r\n  font-size: 30px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n  text-align: left;\r\n}\r\n\r\n.outline {\r\n  width: 10%;\r\n  height: 1px;\r\n  background-color: #03bf8d;\r\n  border-radius: 3px;\r\n  float: left;\r\n}\r\n\r\n.description {\r\n  font-size: 14px;\r\n  letter-spacing: 1px;\r\n  width: 560px;\r\n  margin-left: 0;\r\n  margin-top: 40px;\r\n  margin-bottom: 40px;\r\n  line-height: 25px;\r\n}\r\n\r\n.search {\r\n  width: 100%;\r\n  background-color: #e8e8e8;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 30px 27px;\r\n  border-radius: 3px;\r\n  -ms-flex-wrap: wrap;\r\n      flex-wrap: wrap;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 10px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.search button{\r\n  width: 20%;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n.search button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.search-result-container {\r\n  width: 100%;\r\n  margin-top: 20px;\r\n  background-color: #e8e8e8;\r\n  height: 415px;\r\n  border-radius: 3px;\r\n  overflow: auto;\r\n}\r\n\r\n.wrapper{\r\n  width: 85%;\r\n  display: inline-block;\r\n}\r\n\r\n.main{\r\n  text-align: center;\r\n}\r\n\r\n.left-block{\r\n  float:left;\r\n  width: 65%;\r\n}\r\n\r\n.right-block{\r\n  float:right;\r\n  width: 33%;\r\n}\r\n\r\n.add{\r\n  margin-top: 20px;\r\n}\r\n\r\n.blocks{\r\n  background-color: #e8e8e8;\r\n  width: 100%;\r\n  text-align: left;\r\n  padding: 20px 30px 10px 35px;\r\n  border-radius: 3px;\r\n}\r\n\r\n.most-popular ul li{\r\n  list-style-type: decimal;\r\n}\r\n\r\n.most-popular ul{\r\n  padding-left: 21px;\r\n\r\n}\r\n\r\nh2{\r\n  font-size: 18px;\r\n  padding: 5px 5px 5px 0;\r\n  font-weight: 600;\r\n}\r\n\r\n.add-file input {\r\n  background-color: white;\r\n  border: none;\r\n  padding-left: 10px;\r\n  margin-top: 20px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.add-file button{\r\n  margin-left: -4px;\r\n  width: 19%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n\r\n.add-file button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.delimiter {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  margin-top: 15px;\r\n  margin-bottom: 15px;\r\n}\r\n\r\n.or {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n}\r\n\r\n.delimiter .outline {\r\n  width: 100%;\r\n  background-color: black;\r\n}\r\n\r\n.upload-file button{\r\n  margin-left: 1px;\r\n  width: 99%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 3px;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -283,7 +314,7 @@ module.exports = module.exports.toString();
 /***/ 213:
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n<div class=\"outline\"></div>\r\n<div class=\"description\">\r\n  Develop a creative way for the public and scientists alike to learn the\r\n  definitions of Earth-related scientific and technical terms, using the\r\n  power of crowdsourcing.\r\n</div>\r\n\r\n<div class=\"search\">\r\n  <input (keyup)=\"onSearchInputChanged(searchInput.value)\" placeholder=\"Поиск...\" #searchInput/>\r\n  <button (click)=\"search(searchInput.value)\">Search</button>\r\n  <div *ngIf=\"searchInput.value\">\r\n    <div *ngFor=\"let str of searchHelp\">\r\n      <span (click)=\"search(str); searchInput.value=''\">{{str}}</span>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"search-result-container\">\r\n  <div *ngIf=\"notFound\">\r\n    <span>Results not found</span>\r\n    <br>\r\n    <a href=\"http://google.com\">Try to find it in Google</a>\r\n  </div>\r\n  <div *ngFor=\"let str of searchResult\">\r\n    <span>{{str}}</span>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"top-five\">\r\n  <ol>\r\n    <li *ngFor=\"let str of topFive\">\r\n      <span (click)=\"search(str)\">{{str}}</span>\r\n    </li>\r\n  </ol>\r\n</div>\r\n"
+module.exports = "<div class=\"main\">\r\n  <div class=\"wrapper\">\r\n    <h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n    <div class=\"outline\"></div>\r\n    <div align=\"left\">\r\n      <div class=\"description\">\r\n        Develop a creative way for the public and scientists alike to learn the\r\n        definitions of Earth-related scientific and technical terms, using the\r\n        power of crowdsourcing.\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"left-block\">\r\n      <div class=\"search\">\r\n        <input (keyup)=\"onSearchInputChanged(searchText)\" [(ngModel)]=\"searchText\" placeholder=\" Type the word...\" #searchInput/>\r\n        <button (click)=\"search(searchText)\" class=\"btn-search\">Search</button>\r\n        <div *ngIf=\"searchInput.value\">\r\n          <div *ngFor=\"let str of searchHelp\">\r\n            <span (click)=\"search(str); searchInput.value=''\">{{str}}</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"search-result-container\">\r\n        <div *ngIf=\"notFound\">\r\n          <span>Results not found</span>\r\n          <br>\r\n          <a href=\"http://google.com\">Try to find it in Google</a>\r\n        </div>\r\n        <div class=\"main\" *ngFor=\"let str of searchResult\">\r\n          <span>{{str}}</span>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"right-block\">\r\n      <div class=\"most-popular blocks\">\r\n        <h2>Popular searches</h2>\r\n        <ul>\r\n          <li *ngFor=\"let str of topFive\">\r\n            <span (click)=\"search(str)\">{{str}}</span>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"add blocks\">\r\n        <h2>Add the words</h2>\r\n        <span>If you want to add your own world you can add a single word or you can upload file</span>\r\n        <div class=\"add-file\">\r\n          <input (keyup)=\"onSearchInputChanged(searchInput.value)\" placeholder=\" Type the word...\" #searchInput/>\r\n          <button (click)=\"search(searchInput.value)\" class=\"btn-search\">+</button>\r\n        </div>\r\n\r\n        <div class=\"delimiter\">\r\n          <div class=\"outline\"></div> <div class=\"or\">or</div> <div class=\"outline\"></div>\r\n        </div>\r\n\r\n        <div class=\"upload-file\">\r\n          <input type=\"file\" (change)=\"fileChangedEvent($event)\" class=\"btn-search\" placeholder=\"Upload file\"/>\r\n          <button type=\"button\" (click)=\"upload()\">Upload</button>\r\n          <!--<ng2-file-input>Upload</ng2-file-input>-->\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n\r\n</div>\r\n"
 
 /***/ }),
 

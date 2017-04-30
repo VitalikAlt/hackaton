@@ -61,6 +61,7 @@
   background-color: #e8e8e8;
   height: 415px;
   border-radius: 3px;
+  overflow: auto;
 }
 
 .wrapper{

@@ -9,6 +9,8 @@ import 'rxjs/add/operator/catch'
 export class HttpService {
 
   private baseUrl = 'http://localhost:8080/';
+
+
   constructor(private http: Http) { }
 
   private handleError (error: Response | any) {
@@ -27,6 +29,27 @@ export class HttpService {
   private extractData (res: Response) {
     let body = res.json();
     return body || { };
+  }
+
+  makeFileRequest(files: Array<File>) {
+    return new Promise((resolve, reject) => {
+      var formData: any = new FormData();
+      var xhr = new XMLHttpRequest();
+      for(var i = 0; i < files.length; i++) {
+        formData.append("uploads[]", files[i], files[i].name);
+      }
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      }
+      xhr.open("POST", this.baseUrl+'upload', true);
+      xhr.send(formData);
+    });
   }
 
   getSearchResult(searchParam: string) : Observable<string[]>{

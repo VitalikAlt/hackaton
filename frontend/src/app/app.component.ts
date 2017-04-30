@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService} from './services/http.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +14,8 @@ export class AppComponent implements OnInit{
   searchHelp: string[];
   topFive: string[];
 
+  filesToUpload: Array<File>;
+
 
   ngOnInit(){
     this.getTopFive();
@@ -22,10 +23,25 @@ export class AppComponent implements OnInit{
 
   constructor (private httpService: HttpService) {}
 
+  fileChangedEvent(fileInput: any){
+    this.filesToUpload = fileInput.target.files;
+  }
+
+  upload() {
+    this.httpService.makeFileRequest(this.filesToUpload).then((result) => {
+      console.log(result);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+
+
   search(searchInput: string) : void {
 
-    console.log(searchInput)
     if (!searchInput) return;
+
+
     this.httpService.getSearchResult(searchInput)
       .subscribe(result => {
           if (result.length > 0){
