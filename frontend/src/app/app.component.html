@@ -2,7 +2,6 @@
   <div class="wrapper">
     <h1 class="title">DICTIONARY OF EARTH</h1>
     <div class="outline"></div>
-    <BR>
     <div align="left">
       <div class="description">
         Develop a creative way for the public and scientists alike to learn the
@@ -13,12 +12,8 @@
 
     <div class="left-block">
       <div class="search">
-        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
-        <button (click)="search(searchInput.value)" class="btn-search">Search</button>
-      </div>
-      <div class="search">
-        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
-        <button (click)="search(searchInput.value)">Search</button>
+        <input (keyup)="onSearchInputChanged(searchText)" [(ngModel)]="searchText" placeholder=" Type the word..." #searchInput/>
+        <button (click)="search(searchText)" class="btn-search">Search</button>
         <div *ngIf="searchInput.value">
           <div *ngFor="let str of searchHelp">
             <span (click)="search(str); searchInput.value=''">{{str}}</span>
@@ -31,37 +26,39 @@
           <br>
           <a href="http://google.com">Try to find it in Google</a>
         </div>
-        <div *ngFor="let str of searchResult">
+        <div class="main" *ngFor="let str of searchResult">
           <span>{{str}}</span>
         </div>
       </div>
+    </div>
 
-
-      <div class="top-five">
+    <div class="right-block">
+      <div class="most-popular blocks">
+        <h2>Popular searches</h2>
         <ul>
           <li *ngFor="let str of topFive">
             <span (click)="search(str)">{{str}}</span>
           </li>
         </ul>
       </div>
-    </div>
-
-
-    <div class="right-block">
-      <div class="most-popular blocks">
-        <h2>Popular queries</h2>
-        <!-- Ul Li elements for example -->
-        <ul>
-          <li>One</li>
-          <li>Two</li>
-        </ul>
-      </div>
       <div class="add blocks">
-        <h2>Add words</h2>
-        Lorem ipsum
+        <h2>Add the words</h2>
+        <span>If you want to add your own world you can add a single word or you can upload file</span>
+        <div class="add-file">
+          <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder=" Type the word..." #searchInput/>
+          <button (click)="search(searchInput.value)" class="btn-search">+</button>
+        </div>
 
+        <div class="delimiter">
+          <div class="outline"></div> <div class="or">or</div> <div class="outline"></div>
+        </div>
+
+        <div class="upload-file">
+          <button (click)="search(searchInput.value)" class="btn-search">Upload file</button>
+        </div>
       </div>
     </div>
+
   </div>
 
 </div>

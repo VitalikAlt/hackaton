@@ -9,6 +9,7 @@ import { HttpService} from './services/http.service';
 })
 export class AppComponent implements OnInit{
 
+  private searchText: string[];
   searchResult: string[];
   notFound: boolean;
   searchHelp: string[];
@@ -23,10 +24,10 @@ export class AppComponent implements OnInit{
 
   search(searchInput: string) : void {
 
+    console.log(searchInput)
     if (!searchInput) return;
     this.httpService.getSearchResult(searchInput)
-      .subscribe
-      (result =>{
+      .subscribe(result => {
           if (result.length > 0){
             this.searchResult = result;
             this.notFound = false;
@@ -36,9 +37,7 @@ export class AppComponent implements OnInit{
             this.notFound = true;
             this.searchResult = [""];
           }
-        }
-      ),
-      error => console.error(error)
+        }, error => console.error(error))
   };
 
   getTopFive() : void {
