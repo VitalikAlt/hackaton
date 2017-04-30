@@ -4,9 +4,7 @@
     <div class="outline"></div>
     <div align="left">
       <div class="description">
-        Develop a creative way for the public and scientists alike to learn the
-        definitions of Earth-related scientific and technical terms, using the
-        power of crowdsourcing.
+        A creative tool for science enthusiasts and scientists to share and learn the definitions of Earth-related scientific and technical terms.
       </div>
     </div>
 
@@ -55,7 +53,7 @@
           <h2>Popular searches</h2>
           <ul>
             <li *ngFor="let str of topFive">
-              <span (click)="search(str)">{{str}}</span>
+              <span (click)="search(str); searchInput.value = str">{{str}}</span>
             </li>
           </ul>
         </div>
@@ -107,6 +105,10 @@
     </button>
   </div>
   <div class="modal-body">
+    <pre>For success upload your file must be with txt extension and have special structure:
+      NBA    basketball association
+      word + /t + description
+    </pre>
     <input type="file" (change)="fileChangedEvent($event)" class="btn-search" />
   </div>
   <div class="modal-footer">
