@@ -10,69 +10,71 @@
       </div>
     </div>
 
-    <div class="left-block">
-      <div class="search">
-        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Type the word..." #searchInput list="suggestions"/>
-        <button (click)="search(searchInput.value)" class="btn-search">Search</button>
-        <datalist id="suggestions" (click)="search(searchInput.value)">
-          <option *ngFor="let str of searchHelp">{{str}}</option>
-        </datalist>
-      </div>
-
-      <div class="search-result-container">
-        <div *ngIf="notFound">
-          <span>Results not found</span>
-          <br>
-          <a href="http://google.com">Try to find it in Google</a>
+    <div class="content-wrapper">
+      <div class="left-block">
+        <div class="search">
+          <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Type the word..." #searchInput list="suggestions"/>
+          <button (click)="search(searchInput.value)" class="btn-search">Search</button>
+          <datalist id="suggestions">
+            <option *ngFor="let str of searchHelp"><span (click)="search(searchInput.value)">{{str}}</span></option>
+          </datalist>
         </div>
-        <div class="key-result-row">
-          <div class="key-result-container" *ngFor="let sr of searchFirstRow">
-            <span><b>{{sr.key}}</b></span>
-            <div class="value-container">
-              <div class="value" *ngFor="let value of sr.value">
-                <span>{{value}}</span>
+
+        <div class="search-result-container">
+          <div *ngIf="notFound">
+            <span>Results not found</span>
+            <br>
+            <a href="http://google.com">Try to find it in Google</a>
+          </div>
+          <div class="key-result-row">
+            <div class="key-result-container" *ngFor="let sr of searchFirstRow">
+              <span><b>{{sr.key}}</b></span>
+              <div class="value-container">
+                <div class="value" *ngFor="let value of sr.value">
+                  <span>{{value}}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-       <div class="key-result-row">
-         <div class="key-result-container" *ngFor="let sr of searchSecondRow">
-           <span><b>{{sr.key}}</b></span>
-           <div class="value-container">
-             <div class="value" *ngFor="let value of sr.value">
-               <span>{{value}}</span>
+         <div class="key-result-row">
+           <div class="key-result-container" *ngFor="let sr of searchSecondRow">
+             <span><b>{{sr.key}}</b></span>
+             <div class="value-container">
+               <div class="value" *ngFor="let value of sr.value">
+                 <span>{{value}}</span>
+               </div>
              </div>
            </div>
          </div>
-       </div>
-      </div>
-
-    </div>
-
-    <div class="right-block">
-      <div class="most-popular blocks">
-        <h2>Popular searches</h2>
-        <ul>
-          <li *ngFor="let str of topFive">
-            <span (click)="search(str)">{{str}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="add blocks">
-        <h2>Add the words</h2>
-        <span>If you want to add your own words you can add a single word or you can upload file</span>
-        <div class="add-file">
-          <input [(ngModel)]="newKey" placeholder="Type your abbreviation here"/>
-          <button (click)="openModal()" class="btn-search">+</button>
-          <p *ngIf="incorrectInput" class="incorrect-input-message">Please, enter your abbreviation</p>
         </div>
 
-        <div class="delimiter">
-          <div class="outline"></div> <div class="or">or</div> <div class="outline"></div>
-        </div>
+      </div>
 
-        <div class="upload-file">
-          <button type="button" class="btn-search" (click)="openUpload()">Upload</button>
+      <div class="right-block">
+        <div class="most-popular blocks">
+          <h2>Popular searches</h2>
+          <ul>
+            <li *ngFor="let str of topFive">
+              <span (click)="search(str)">{{str}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="add blocks">
+          <h2>Add the words</h2>
+          <span>If you want to add your own words you can add a single word or you can upload file</span>
+          <div class="add-file">
+            <input [(ngModel)]="newKey" placeholder="Type your abbreviation here"/>
+            <button (click)="openModal()" class="btn-search">+</button>
+            <p *ngIf="incorrectInput" class="incorrect-input-message">Please, enter your abbreviation</p>
+          </div>
+
+          <div class="delimiter">
+            <div class="outline"></div> <div class="or">or</div> <div class="outline"></div>
+          </div>
+
+          <div class="upload-file">
+            <button type="button" class="btn-search" (click)="openUpload()">Upload</button>
+          </div>
         </div>
       </div>
     </div>

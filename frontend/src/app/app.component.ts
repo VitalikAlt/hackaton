@@ -82,9 +82,10 @@ export class AppComponent implements OnInit{
             this.searchSecondRow = new Array();
             for (let i = 0; i < result.length; i++){
               if (i % 2 == 0)
-                this.searchSecondRow.push(result[i]);
-              else
                 this.searchFirstRow.push(result[i]);
+
+              else
+                this.searchSecondRow.push(result[i]);
             }
             this.getTopFive();
           }

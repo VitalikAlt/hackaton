@@ -243,3 +243,10 @@ button:hover, button:focus, button:active {
   outline: 0 !important;
   border: none !important;
 }
+
+.content-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
