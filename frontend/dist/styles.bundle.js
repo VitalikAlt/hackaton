@@ -63,7 +63,7 @@ exports = module.exports = __webpack_require__(70)(false);
 
 
 // module
-exports.push([module.i, "body {\r\n  font-family: Calibri, sans-serif;\r\n  src: url(" + __webpack_require__(242) + ");\r\n  padding: 20px;\r\n}\r\n", ""]);
+exports.push([module.i, "body {\n  font-family: Calibri, sans-serif;\n  src: url(" + __webpack_require__(242) + ");\n  padding: 20px;\n}\n", ""]);
 
 // exports
 
