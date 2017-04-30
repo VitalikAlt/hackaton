@@ -16,10 +16,10 @@ class SearchQuery {
                     return rej(err);
 
                 data = data.sort(function (a, b) {
-                    if (a.count > b.count)
+                    if (a.count < b.count)
                         return 1;
 
-                    if (a.count < b.count)
+                    if (a.count > b.count)
                         return -1;
 
                     return 0;

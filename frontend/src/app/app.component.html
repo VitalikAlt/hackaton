@@ -45,8 +45,8 @@
         <h2>Add the words</h2>
         <span>If you want to add your own world you can add a single word or you can upload file</span>
         <div class="add-file">
-          <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder=" Type the word..." #searchInput/>
-          <button (click)="search(searchInput.value)" class="btn-search">+</button>
+          <input (keyup)="onSearchInputChanged(searchInput.value)" [(ngModel)]="newKey" placeholder=" Type the new word..." #searchInput/>
+          <button (click)="openModal()" class="btn-search">+</button>
         </div>
 
         <div class="delimiter">
@@ -60,7 +60,23 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
+
+<ng-template class="collapse" #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add new word</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Add new word&hellip;</p>
+    <input class="form-control" [(ngModel)]="newValue"/>
+  </div>
+  <div class="modal-footer">
+    <span style="margin-right: 10px; color: red">{{modalError}}</span>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-info" (click)="addNewWord()">Add</button>
+  </div>
+</ng-template>

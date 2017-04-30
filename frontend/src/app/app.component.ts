@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService} from './services/http.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,10 @@ export class AppComponent implements OnInit{
   notFound: boolean;
   searchHelp: string[];
   topFive: string[];
+  newKey: string[];
+  newValue: string[];
+  modalError = '';
+  @ViewChild('content') content: any;
 
   filesToUpload: Array<File>;
 
@@ -21,7 +26,10 @@ export class AppComponent implements OnInit{
     this.getTopFive();
   }
 
-  constructor (private httpService: HttpService) {}
+  constructor (
+    private httpService: HttpService,
+    private modalService: NgbModal
+  ) {}
 
   fileChangedEvent(fileInput: any){
     this.filesToUpload = fileInput.target.files;
@@ -60,7 +68,7 @@ export class AppComponent implements OnInit{
     this.httpService.getTopFive()
       .subscribe
       (
-        result => this.topFive = result.reverse(),
+        result => this.topFive = result,
         error => console.error(error)
       )
   }
@@ -74,7 +82,18 @@ export class AppComponent implements OnInit{
           error => console.error(error)
         )
     }
+  }
 
+  openModal() {
+    this.modalError = '';
+    this.modalService.open(this.content, {size: 'lg'})
+  }
+
+  addNewWord() {
+    if (!this.newValue)
+      return this.modalError = 'Please, input the description of word!';
+
+    console.log(this.newKey, this.newValue);
   }
 
 }

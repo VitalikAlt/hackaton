@@ -9,16 +9,6 @@ class TopRoute extends BaseRoute{
         let result = [];
         let top = await this.core.db.searches.getTop(5);
 
-        top = top.sort((a, b) => {
-            if (a.count > b.count)
-                return 1;
-
-            if (a.count < b.count)
-                return -1;
-
-            return 0;
-        });
-        console.log(top);
         for(let i = 0; i < top.length; i++) {
             result.push(top[i].search);
         }
