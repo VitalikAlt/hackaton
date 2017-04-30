@@ -17,12 +17,11 @@ class SearchRoute extends BaseRoute {
 
         form.parse(this.req, (err, fields, files) => {
             this.res.writeHead(200, {'content-type': 'text/plain'});
-            this.res.write('received upload:\n\n');
-            this.res.end(util.inspect({fields: fields, files: files}));
+            this.res.write(JSON.stringify({}));
+            this.res.end(JSON.stringify({}));
 
             const fileName = files['uploads[]'].name;
             this.onFileUploaded(files['uploads[]'].path, fileName.slice(0, fileName.indexOf('.')));
-            console.log('!!!!', files['uploads[]'].path);
         });
     }
 
@@ -38,6 +37,9 @@ class SearchRoute extends BaseRoute {
                 continue;
             }
 
+            try {
+                fs.mkdirSync(`./base/${folderName}`, (err) => {});
+            } catch (err) {}
 
             fs.writeFileSync(`./base/${folderName}/${currentName}`, JSON.stringify(currentFile));
             currentName = data[i][0];

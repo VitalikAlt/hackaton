@@ -12,6 +12,11 @@ class Add_wordRoute extends BaseRoute {
 
     handle() {
         let currentName = this.params.key[0];
+
+        try {
+            fs.mkdirSync(`./base/alone`, (err) => {});
+        } catch (err) {}
+
         if (fs.existsSync(`./base/alone/${currentName}`)) {
             let file = fs.readFileSync(`./base/alone/${currentName}`, 'utf-8');
             file = JSON.parse(file);

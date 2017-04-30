@@ -70,9 +70,7 @@
         </div>
 
         <div class="upload-file">
-          <input type="file" (change)="fileChangedEvent($event)" class="btn-search" placeholder="Upload file"/>
-          <button type="button" (click)="upload()">Upload</button>
-          <!--<ng2-file-input>Upload</ng2-file-input>-->
+          <button type="button" class="btn-search" (click)="openUpload()">Upload</button>
         </div>
       </div>
     </div>
@@ -93,6 +91,23 @@
   <div class="modal-footer">
     <span style="margin-right: 10px; color: red">{{modalError}}</span>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    <button type="button" class="btn add-description-btn" (click)="addNewDescription()">Add</button>
+    <button type="button" class="btn add-description-btn" (click)="addNewDescription(c)">Add</button>
+  </div>
+</ng-template>
+
+<ng-template class="collapse" #content1 let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Upload file</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="file" (change)="fileChangedEvent($event)" class="btn-search" placeholder="Upload file"/>
+  </div>
+  <div class="modal-footer">
+    <span style="margin-right: 10px">{{uploadHelper}}</span>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn add-description-btn" (click)="upload(c)">Upload</button>
   </div>
 </ng-template>

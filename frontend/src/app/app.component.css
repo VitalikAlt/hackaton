@@ -1,3 +1,15 @@
+button {
+  cursor: pointer;
+}
+
+.clickers {
+  transition: 0.4s;
+}
+
+.clickers:hover {
+  background-color: #03422f;
+}
+
 .title {
   font-size: 30px;
   letter-spacing: 5px;
@@ -50,9 +62,10 @@
   border: 0;
   color: #fff;
   border-radius: 0 3px 3px 0;
+  transition: 0.4s;
 }
 .search button:hover{
-  background: #7b7878;
+  background: #037a5e;
 }
 
 .search-result-container {
@@ -131,10 +144,11 @@ h2{
   border: 0;
   color: #fff;
   border-radius: 0 3px 3px 0;
+  transition: 0.4s;
 }
 
 .add-file button:hover{
-  background: #7b7878;
+  background: #037a5e;
 }
 
 .delimiter {
@@ -167,21 +181,11 @@ h2{
   color: #fff;
   border-radius: 3px;
   margin-bottom: 10px;
+  transition: 0.4s;
 }
 
-.collapse, .collapse.in {
-  display: block !important;
-  transition: all .25s ease-in-out;
-}
-
-.collapse {
-  opacity: 0;
-  height: 0;
-}
-
-.collapse.in {
-  opacity: 1;
-  height: 100%;
+.upload-file button:hover{
+  background: #037a5e;
 }
 
 .incorrect-input-message{

@@ -18,12 +18,14 @@ export class AppComponent implements OnInit{
   notFound: boolean;
   searchHelp: string[];
   topFive: string[];
+  uploadHelper: string;
   newKey: string; // new abbreviation
   newValue: string; // description for new abbreviation
   modalError : string = ''; // error message for modal
   incorrectInput: boolean; // incorrect abb input message
 
   @ViewChild('content') content: any;
+  @ViewChild('content1') content1: any;
 
   filesToUpload: Array<File>;
 
@@ -39,14 +41,14 @@ export class AppComponent implements OnInit{
     private modalService: NgbModal
   ) {}
 
-  addNewDescription (){
+  addNewDescription (close){
     if (!this.newValue)
       return this.modalError = 'Please, input the description of word!';
 
     this.httpService.saveDescription(this.newKey, this.newValue)
       .subscribe
       (
-        result => this.content.close(),
+        result => {close(); this.newKey = '';},
         error => console.error(error)
       )
   }
@@ -55,8 +57,10 @@ export class AppComponent implements OnInit{
     this.filesToUpload = fileInput.target.files;
   }
 
-  upload() {
+  upload(c) {
+    this.uploadHelper = 'Загрузка...';
     this.httpService.makeFileRequest(this.filesToUpload).then((result) => {
+      c();
       console.log(result);
     }, (error) => {
       console.error(error);
@@ -122,5 +126,8 @@ export class AppComponent implements OnInit{
     else this.incorrectInput = true;
   }
 
-
+  openUpload() {
+    this.uploadHelper = '';
+    this.modalService.open(this.content1, {size: 'lg'})
+  }
 }
