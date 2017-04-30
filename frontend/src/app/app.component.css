@@ -61,7 +61,10 @@
   background-color: #e8e8e8;
   height: 415px;
   border-radius: 3px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: row;
 }
 
 .wrapper{
@@ -192,3 +195,17 @@ h2{
   background: #02bf8d;
   color: white;
 }
+
+.key-result-container{
+
+  text-align: left;
+  min-width: 45%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.value-container{
+  display: flex;
+  flex-direction: column;
+}
+

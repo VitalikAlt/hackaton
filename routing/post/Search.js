@@ -32,7 +32,7 @@ class SearchRoute extends BaseRoute {
 
                     if (cattedKey === this.params.searchParam) {
                         this.addSearch(this.params.searchParam);
-                        result.push({key: data[key]})
+                        result.push({key: key, value: data[key]})
                     }
                 }
 

@@ -20,16 +20,31 @@
           </div>
         </div>
       </div>
+
       <div class="search-result-container">
         <div *ngIf="notFound">
           <span>Results not found</span>
           <br>
           <a href="http://google.com">Try to find it in Google</a>
         </div>
-        <div class="main" *ngFor="let str of searchResult">
-          <span>{{str}}</span>
+        <div class="key-result-container" *ngFor="let sr of searchFirstRow">
+          <span><b>{{sr.key}}</b></span>
+          <div class="value-container">
+            <div class="value" *ngFor="let value of sr.value">
+              <span>{{value}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="key-result-container" *ngFor="let sr of searchSecondRow">
+          <span><b>{{sr.key}}</b></span>
+          <div class="value-container">
+            <div class="value" *ngFor="let value of sr.value">
+              <span>{{value}}</span>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
 
     <div class="right-block">

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService} from './services/http.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
+import  { SearchResult } from './search-result';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,7 +11,10 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent implements OnInit{
 
-  searchResult: string[];
+  searchResult: SearchResult[]; // overall search results
+  searchFirstRow: SearchResult[]; // first row search result
+  searchSecondRow: SearchResult[]; // second row
+
   notFound: boolean;
   searchHelp: string[];
   topFive: string[];
@@ -26,6 +31,7 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.getTopFive();
     this.newKey = '';
+    this.searchResult = [];
   }
 
   constructor (
@@ -61,7 +67,6 @@ export class AppComponent implements OnInit{
 
     if (!searchInput) return;
 
-
     this.httpService.getSearchResult(searchInput)
       .subscribe(result => {
           if (result.length > 0){
@@ -71,9 +76,20 @@ export class AppComponent implements OnInit{
           }
           else {
             this.notFound = true;
-            this.searchResult = [""];
+            this.searchResult = [];
           }
         }, error => console.error(error))
+
+    this.searchFirstRow = new Array();
+    this.searchSecondRow = new Array();
+    for (let i = 0; i < this.searchResult.length; i++){
+      if (i % 2 == 0)
+        this.searchSecondRow.push(this.searchResult[i]);
+      else
+        this.searchFirstRow.push(this.searchResult[i]);
+    }
+
+
   };
 
   getTopFive() : void {

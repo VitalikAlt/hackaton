@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import  { Headers, Http, Response, RequestOptions } from '@angular/http';
 
+import { SearchResult } from '../search-result';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch'
@@ -31,6 +33,10 @@ export class HttpService {
     return body || { };
   }
 
+  private extractSearchData (res: Response){
+    return res.json() as SearchResult[];
+  }
+
   makeFileRequest(files: Array<File>) {
     return new Promise((resolve, reject) => {
       var formData: any = new FormData();
@@ -52,7 +58,7 @@ export class HttpService {
     });
   }
 
-  getSearchResult(searchParam: string) : Observable<string[]>{
+  getSearchResult(searchParam: string) : Observable<SearchResult[]>{
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -60,7 +66,7 @@ export class HttpService {
 
     return this.http
       .post(url, JSON.stringify({ searchParam }), options)
-      .map(this.extractData)
+      .map(this.extractSearchData)
       .catch(this.handleError);
   }
 
