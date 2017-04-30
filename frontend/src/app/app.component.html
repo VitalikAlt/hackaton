@@ -12,8 +12,8 @@
 
     <div class="left-block">
       <div class="search">
-        <input (keyup)="onSearchInputChanged(searchText)" [(ngModel)]="searchText" placeholder=" Type the word..." #searchInput/>
-        <button (click)="search(searchText)" class="btn-search">Search</button>
+        <input (keyup)="onSearchInputChanged(searchText)" placeholder="Type the word..." #searchInput/>
+        <button (click)="search(searchInput.value)" class="btn-search">Search</button>
         <div *ngIf="searchInput.value">
           <div *ngFor="let str of searchHelp">
             <span (click)="search(str); searchInput.value=''">{{str}}</span>
@@ -43,10 +43,11 @@
       </div>
       <div class="add blocks">
         <h2>Add the words</h2>
-        <span>If you want to add your own world you can add a single word or you can upload file</span>
+        <span>If you want to add your own words you can add a single word or you can upload file</span>
         <div class="add-file">
-          <input (keyup)="onSearchInputChanged(searchInput.value)" [(ngModel)]="newKey" placeholder=" Type the new word..." #searchInput/>
+          <input [(ngModel)]="newKey" placeholder="Type your abbreviation here"/>
           <button (click)="openModal()" class="btn-search">+</button>
+          <p *ngIf="incorrectInput" class="incorrect-input-message">Please, enter your abbreviation</p>
         </div>
 
         <div class="delimiter">
@@ -65,18 +66,18 @@
 
 <ng-template class="collapse" #content let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">Add new word</h4>
+    <h4 class="modal-title">Add custom description</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>Add new word&hellip;</p>
+    <p>Add your description for abbreviation '<span>{{newKey}}</span>'</p>
     <input class="form-control" [(ngModel)]="newValue"/>
   </div>
   <div class="modal-footer">
     <span style="margin-right: 10px; color: red">{{modalError}}</span>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    <button type="button" class="btn btn-info" (click)="addNewWord()">Add</button>
+    <button type="button" class="btn add-description-btn" (click)="addNewDescription()">Add</button>
   </div>
 </ng-template>

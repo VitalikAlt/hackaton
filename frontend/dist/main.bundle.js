@@ -1,6 +1,6 @@
 webpackJsonp([2,4],{
 
-/***/ 125:
+/***/ 126:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98,6 +98,15 @@ var HttpService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
+    HttpService.prototype.saveDescription = function (key, value) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        var url = this.baseUrl + 'add_word';
+        return this.http
+            .post(url, JSON.stringify({ key: key, value: value }), options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     return HttpService;
 }());
 HttpService = __decorate([
@@ -110,7 +119,7 @@ var _a;
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -119,18 +128,18 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 145;
+webpackEmptyContext.id = 146;
 
 
 /***/ }),
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(157);
 
@@ -150,7 +159,8 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_http_service__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_http_service__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__ = __webpack_require__(100);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -163,12 +173,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var AppComponent = (function () {
-    function AppComponent(httpService) {
+    function AppComponent(httpService, modalService) {
         this.httpService = httpService;
+        this.modalService = modalService;
+        this.modalError = ''; // error message for modal
     }
     AppComponent.prototype.ngOnInit = function () {
         this.getTopFive();
+        this.newKey = '';
+    };
+    AppComponent.prototype.addNewDescription = function () {
+        var _this = this;
+        if (!this.newValue)
+            return this.modalError = 'Please, input the description of word!';
+        this.httpService.saveDescription(this.newKey, this.newValue)
+            .subscribe(function (result) {
+            console.log('123');
+            _this.content.close();
+        }, function (error) { return console.error(error); });
     };
     AppComponent.prototype.fileChangedEvent = function (fileInput) {
         this.filesToUpload = fileInput.target.files;
@@ -201,7 +225,7 @@ var AppComponent = (function () {
     AppComponent.prototype.getTopFive = function () {
         var _this = this;
         this.httpService.getTopFive()
-            .subscribe(function (result) { return _this.topFive = result.reverse(); }, function (error) { return console.error(error); });
+            .subscribe(function (result) { return _this.topFive = result; }, function (error) { return console.error(error); });
     };
     AppComponent.prototype.onSearchInputChanged = function (value) {
         var _this = this;
@@ -210,18 +234,32 @@ var AppComponent = (function () {
                 .subscribe(function (result) { return _this.searchHelp = result; }, function (error) { return console.error(error); });
         }
     };
+    AppComponent.prototype.openModal = function () {
+        this.modalError = '';
+        console.log('key: ' + this.newKey);
+        if (this.newKey) {
+            this.incorrectInput = false;
+            this.modalService.open(this.content, { size: 'lg' });
+        }
+        else
+            this.incorrectInput = true;
+    };
     return AppComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* ViewChild */])('content'),
+    __metadata("design:type", Object)
+], AppComponent.prototype, "content", void 0);
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__(213),
         styles: [__webpack_require__(211)]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_http_service__["a" /* HttpService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["b" /* NgbModal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["b" /* NgbModal */]) === "function" && _b || Object])
 ], AppComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -234,8 +272,8 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_http_service__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_http_service__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(155);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -301,7 +339,7 @@ exports = module.exports = __webpack_require__(70)(false);
 
 
 // module
-exports.push([module.i, ".title {\r\n  font-size: 30px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n  text-align: left;\r\n}\r\n\r\n.outline {\r\n  width: 10%;\r\n  height: 1px;\r\n  background-color: #03bf8d;\r\n  border-radius: 3px;\r\n  float: left;\r\n}\r\n\r\n.description {\r\n  font-size: 14px;\r\n  letter-spacing: 1px;\r\n  width: 560px;\r\n  margin-left: 0;\r\n  margin-top: 40px;\r\n  margin-bottom: 40px;\r\n  line-height: 25px;\r\n}\r\n\r\n.search {\r\n  width: 100%;\r\n  background-color: #e8e8e8;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 30px 27px;\r\n  border-radius: 3px;\r\n  -ms-flex-wrap: wrap;\r\n      flex-wrap: wrap;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 10px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.search button{\r\n  width: 20%;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n.search button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.search-result-container {\r\n  width: 100%;\r\n  margin-top: 20px;\r\n  background-color: #e8e8e8;\r\n  height: 415px;\r\n  border-radius: 3px;\r\n  overflow: auto;\r\n}\r\n\r\n.wrapper{\r\n  width: 85%;\r\n  display: inline-block;\r\n}\r\n\r\n.main{\r\n  text-align: center;\r\n}\r\n\r\n.left-block{\r\n  float:left;\r\n  width: 65%;\r\n}\r\n\r\n.right-block{\r\n  float:right;\r\n  width: 33%;\r\n}\r\n\r\n.add{\r\n  margin-top: 20px;\r\n}\r\n\r\n.blocks{\r\n  background-color: #e8e8e8;\r\n  width: 100%;\r\n  text-align: left;\r\n  padding: 20px 30px 10px 35px;\r\n  border-radius: 3px;\r\n}\r\n\r\n.most-popular ul li{\r\n  list-style-type: decimal;\r\n}\r\n\r\n.most-popular ul{\r\n  padding-left: 21px;\r\n\r\n}\r\n\r\nh2{\r\n  font-size: 18px;\r\n  padding: 5px 5px 5px 0;\r\n  font-weight: 600;\r\n}\r\n\r\n.add-file input {\r\n  background-color: white;\r\n  border: none;\r\n  padding-left: 10px;\r\n  margin-top: 20px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.add-file button{\r\n  margin-left: -4px;\r\n  width: 19%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n\r\n.add-file button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.delimiter {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  margin-top: 15px;\r\n  margin-bottom: 15px;\r\n}\r\n\r\n.or {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n}\r\n\r\n.delimiter .outline {\r\n  width: 100%;\r\n  background-color: black;\r\n}\r\n\r\n.upload-file button{\r\n  margin-left: 1px;\r\n  width: 99%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 3px;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
+exports.push([module.i, ".title {\r\n  font-size: 30px;\r\n  letter-spacing: 5px;\r\n  font-weight: 600;\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n  text-align: left;\r\n}\r\n\r\n.outline {\r\n  width: 10%;\r\n  height: 1px;\r\n  background-color: #03bf8d;\r\n  border-radius: 3px;\r\n  float: left;\r\n}\r\n\r\n.description {\r\n  font-size: 14px;\r\n  letter-spacing: 1px;\r\n  width: 560px;\r\n  margin-left: 0;\r\n  margin-top: 40px;\r\n  margin-bottom: 40px;\r\n  line-height: 25px;\r\n}\r\n\r\n.search {\r\n  width: 100%;\r\n  background-color: #e8e8e8;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 30px 27px;\r\n  border-radius: 3px;\r\n  -ms-flex-wrap: wrap;\r\n      flex-wrap: wrap;\r\n}\r\n\r\n.search input {\r\n  background-color: white;\r\n  border: none;\r\n  padding: 10px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.search button{\r\n  width: 20%;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n.search button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.search-result-container {\r\n  width: 100%;\r\n  margin-top: 20px;\r\n  background-color: #e8e8e8;\r\n  height: 415px;\r\n  border-radius: 3px;\r\n  overflow: auto;\r\n}\r\n\r\n.wrapper{\r\n  width: 85%;\r\n  display: inline-block;\r\n}\r\n\r\n.main{\r\n  text-align: center;\r\n}\r\n\r\n.left-block{\r\n  float:left;\r\n  width: 65%;\r\n}\r\n\r\n.right-block{\r\n  float:right;\r\n  width: 33%;\r\n}\r\n\r\n.add{\r\n  margin-top: 20px;\r\n}\r\n\r\n.blocks{\r\n  background-color: #e8e8e8;\r\n  width: 100%;\r\n  text-align: left;\r\n  padding: 20px 30px 10px 35px;\r\n  border-radius: 3px;\r\n}\r\n\r\n.most-popular ul li{\r\n  list-style-type: decimal;\r\n}\r\n\r\n.most-popular ul{\r\n  padding-left: 21px;\r\n\r\n}\r\n\r\nh2{\r\n  font-size: 18px;\r\n  padding: 5px 5px 5px 0;\r\n  font-weight: 600;\r\n}\r\n\r\n.add-file input {\r\n  background-color: white;\r\n  border: none;\r\n  padding-left: 10px;\r\n  margin-top: 20px;\r\n  height: 45px;\r\n  width: 80%;\r\n  border-radius: 3px 0 0 3px;\r\n}\r\n\r\n.add-file button{\r\n  margin-left: -4px;\r\n  width: 19%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 0 3px 3px 0;\r\n}\r\n\r\n.add-file button:hover{\r\n  background: #7b7878;\r\n}\r\n\r\n.delimiter {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  margin-top: 15px;\r\n  margin-bottom: 15px;\r\n}\r\n\r\n.or {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n}\r\n\r\n.delimiter .outline {\r\n  width: 100%;\r\n  background-color: black;\r\n}\r\n\r\n.upload-file button{\r\n  margin-left: 1px;\r\n  width: 99%;\r\n  height: 45px;\r\n  background: #02bf8d;\r\n  border: 0;\r\n  color: #fff;\r\n  border-radius: 3px;\r\n  margin-bottom: 10px;\r\n}\r\n\r\n.collapse, .collapse.in {\r\n  display: block !important;\r\n  transition: all .25s ease-in-out;\r\n}\r\n\r\n.collapse {\r\n  opacity: 0;\r\n  height: 0;\r\n}\r\n\r\n.collapse.in {\r\n  opacity: 1;\r\n  height: 100%;\r\n}\r\n\r\n.incorrect-input-message{\r\n  color: red;\r\n  max-height: 7px;\r\n  padding-left: 5px;\r\n  padding-top: 5px;\r\n}\r\n\r\n.add-description-btn{\r\n  background: #02bf8d;\r\n  color: white;\r\n}\r\n", ""]);
 
 // exports
 
@@ -314,14 +352,14 @@ module.exports = module.exports.toString();
 /***/ 213:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main\">\r\n  <div class=\"wrapper\">\r\n    <h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n    <div class=\"outline\"></div>\r\n    <div align=\"left\">\r\n      <div class=\"description\">\r\n        Develop a creative way for the public and scientists alike to learn the\r\n        definitions of Earth-related scientific and technical terms, using the\r\n        power of crowdsourcing.\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"left-block\">\r\n      <div class=\"search\">\r\n        <input (keyup)=\"onSearchInputChanged(searchText)\" [(ngModel)]=\"searchText\" placeholder=\" Type the word...\" #searchInput/>\r\n        <button (click)=\"search(searchText)\" class=\"btn-search\">Search</button>\r\n        <div *ngIf=\"searchInput.value\">\r\n          <div *ngFor=\"let str of searchHelp\">\r\n            <span (click)=\"search(str); searchInput.value=''\">{{str}}</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"search-result-container\">\r\n        <div *ngIf=\"notFound\">\r\n          <span>Results not found</span>\r\n          <br>\r\n          <a href=\"http://google.com\">Try to find it in Google</a>\r\n        </div>\r\n        <div class=\"main\" *ngFor=\"let str of searchResult\">\r\n          <span>{{str}}</span>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"right-block\">\r\n      <div class=\"most-popular blocks\">\r\n        <h2>Popular searches</h2>\r\n        <ul>\r\n          <li *ngFor=\"let str of topFive\">\r\n            <span (click)=\"search(str)\">{{str}}</span>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"add blocks\">\r\n        <h2>Add the words</h2>\r\n        <span>If you want to add your own world you can add a single word or you can upload file</span>\r\n        <div class=\"add-file\">\r\n          <input (keyup)=\"onSearchInputChanged(searchInput.value)\" placeholder=\" Type the word...\" #searchInput/>\r\n          <button (click)=\"search(searchInput.value)\" class=\"btn-search\">+</button>\r\n        </div>\r\n\r\n        <div class=\"delimiter\">\r\n          <div class=\"outline\"></div> <div class=\"or\">or</div> <div class=\"outline\"></div>\r\n        </div>\r\n\r\n        <div class=\"upload-file\">\r\n          <input type=\"file\" (change)=\"fileChangedEvent($event)\" class=\"btn-search\" placeholder=\"Upload file\"/>\r\n          <button type=\"button\" (click)=\"upload()\">Upload</button>\r\n          <!--<ng2-file-input>Upload</ng2-file-input>-->\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n\r\n</div>\r\n"
+module.exports = "<div class=\"main\">\r\n  <div class=\"wrapper\">\r\n    <h1 class=\"title\">DICTIONARY OF EARTH</h1>\r\n    <div class=\"outline\"></div>\r\n    <div align=\"left\">\r\n      <div class=\"description\">\r\n        Develop a creative way for the public and scientists alike to learn the\r\n        definitions of Earth-related scientific and technical terms, using the\r\n        power of crowdsourcing.\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"left-block\">\r\n      <div class=\"search\">\r\n        <input (keyup)=\"onSearchInputChanged(searchText)\" placeholder=\"Type the word...\" #searchInput/>\r\n        <button (click)=\"search(searchInput.value)\" class=\"btn-search\">Search</button>\r\n        <div *ngIf=\"searchInput.value\">\r\n          <div *ngFor=\"let str of searchHelp\">\r\n            <span (click)=\"search(str); searchInput.value=''\">{{str}}</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"search-result-container\">\r\n        <div *ngIf=\"notFound\">\r\n          <span>Results not found</span>\r\n          <br>\r\n          <a href=\"http://google.com\">Try to find it in Google</a>\r\n        </div>\r\n        <div class=\"main\" *ngFor=\"let str of searchResult\">\r\n          <span>{{str}}</span>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"right-block\">\r\n      <div class=\"most-popular blocks\">\r\n        <h2>Popular searches</h2>\r\n        <ul>\r\n          <li *ngFor=\"let str of topFive\">\r\n            <span (click)=\"search(str)\">{{str}}</span>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"add blocks\">\r\n        <h2>Add the words</h2>\r\n        <span>If you want to add your own words you can add a single word or you can upload file</span>\r\n        <div class=\"add-file\">\r\n          <input [(ngModel)]=\"newKey\" placeholder=\"Type your abbreviation here\"/>\r\n          <button (click)=\"openModal()\" class=\"btn-search\">+</button>\r\n          <p *ngIf=\"incorrectInput\" class=\"incorrect-input-message\">Please, enter your abbreviation</p>\r\n        </div>\r\n\r\n        <div class=\"delimiter\">\r\n          <div class=\"outline\"></div> <div class=\"or\">or</div> <div class=\"outline\"></div>\r\n        </div>\r\n\r\n        <div class=\"upload-file\">\r\n          <input type=\"file\" (change)=\"fileChangedEvent($event)\" class=\"btn-search\" placeholder=\"Upload file\"/>\r\n          <button type=\"button\" (click)=\"upload()\">Upload</button>\r\n          <!--<ng2-file-input>Upload</ng2-file-input>-->\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<ng-template class=\"collapse\" #content let-c=\"close\" let-d=\"dismiss\">\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\">Add custom description</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <p>Add your description for abbreviation '<span>{{newKey}}</span>'</p>\r\n    <input class=\"form-control\" [(ngModel)]=\"newValue\"/>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <span style=\"margin-right: 10px; color: red\">{{modalError}}</span>\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"c('Close click')\">Close</button>\r\n    <button type=\"button\" class=\"btn add-description-btn\" (click)=\"addNewDescription()\">Add</button>\r\n  </div>\r\n</ng-template>\r\n"
 
 /***/ }),
 
 /***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(146);
+module.exports = __webpack_require__(147);
 
 
 /***/ })

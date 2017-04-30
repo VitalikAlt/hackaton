@@ -88,6 +88,17 @@ export class HttpService {
       .catch(this.handleError);
   }
 
+  saveDescription(key: string, value: string){
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    let url = this.baseUrl + 'add_word';
+
+    return this.http
+      .post(url, JSON.stringify({key, value}), options)
+      .map(this.extractData)
+      .catch(this.handleError)
+  }
 
 
 }

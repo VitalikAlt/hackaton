@@ -9,14 +9,15 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent implements OnInit{
 
-  private searchText: string[];
   searchResult: string[];
   notFound: boolean;
   searchHelp: string[];
   topFive: string[];
-  newKey: string[];
-  newValue: string[];
-  modalError = '';
+  newKey: string; // new abbreviation
+  newValue: string; // description for new abbreviation
+  modalError : string = ''; // error message for modal
+  incorrectInput: boolean; // incorrect abb input message
+
   @ViewChild('content') content: any;
 
   filesToUpload: Array<File>;
@@ -24,12 +25,25 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.getTopFive();
+    this.newKey = '';
   }
 
   constructor (
     private httpService: HttpService,
     private modalService: NgbModal
   ) {}
+
+  addNewDescription (){
+    if (!this.newValue)
+      return this.modalError = 'Please, input the description of word!';
+
+    this.httpService.saveDescription(this.newKey, this.newValue)
+      .subscribe
+      (
+        result => this.content.close(),
+        error => console.error(error)
+      )
+  }
 
   fileChangedEvent(fileInput: any){
     this.filesToUpload = fileInput.target.files;
@@ -42,8 +56,6 @@ export class AppComponent implements OnInit{
       console.error(error);
     });
   }
-
-
 
   search(searchInput: string) : void {
 
@@ -86,14 +98,13 @@ export class AppComponent implements OnInit{
 
   openModal() {
     this.modalError = '';
-    this.modalService.open(this.content, {size: 'lg'})
+    console.log('key: ' + this.newKey);
+    if (this.newKey){
+      this.incorrectInput = false;
+      this.modalService.open(this.content, {size: 'lg'})
+    }
+    else this.incorrectInput = true;
   }
 
-  addNewWord() {
-    if (!this.newValue)
-      return this.modalError = 'Please, input the description of word!';
-
-    console.log(this.newKey, this.newValue);
-  }
 
 }
