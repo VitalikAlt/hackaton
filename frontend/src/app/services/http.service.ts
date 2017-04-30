@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import  { Headers, Http, Response, RequestOptions } from '@angular/http';
 
-import { Record } from '../record'
-
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch'
@@ -43,7 +41,7 @@ export class HttpService {
       .catch(this.handleError);
   }
 
-  getTopFive() : Observable<Record[]>{
+  getTopFive() : Observable<string[]>{
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -55,7 +53,17 @@ export class HttpService {
       .catch(this.handleError);
   }
 
+  getSearchHelpData(searchParam: string) : Observable<string[]> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
 
+    let url = this.baseUrl + 'get_keys';
+
+    return this.http
+      .post(url, JSON.stringify({searchParam}), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
 
 

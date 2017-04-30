@@ -9,6 +9,11 @@
 <div class="search">
   <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Поиск..." #searchInput/>
   <button (click)="search(searchInput.value)">Search</button>
+  <div *ngIf="searchInput.value">
+    <div *ngFor="let str of searchHelp">
+      <span (click)="search(str); searchInput.value=''">{{str}}</span>
+    </div>
+  </div>
 </div>
 
 <div class="search-result-container">

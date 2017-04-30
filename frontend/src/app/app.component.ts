@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService} from './services/http.service';
 
-import { Record } from './record'
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,7 @@ export class AppComponent implements OnInit{
   searchResult: string[];
   notFound: boolean;
   searchHelp: string[];
-  topFive: Record[];
+  topFive: string[];
 
 
   ngOnInit(){
@@ -22,14 +21,9 @@ export class AppComponent implements OnInit{
 
   constructor (private httpService: HttpService) {}
 
-  onSearchInputChanged(value: string){
-    this.searchHelp = new Array();
-  }
-
   search(searchInput: string) : void {
 
     if (!searchInput) return;
-
     this.httpService.getSearchResult(searchInput)
       .subscribe
       (result =>{
@@ -54,6 +48,18 @@ export class AppComponent implements OnInit{
         result => this.topFive = result.reverse(),
         error => console.error(error)
       )
+  }
+
+  onSearchInputChanged(value: string){
+    if (value != ""){
+      this.httpService.getSearchHelpData(value)
+        .subscribe
+        (
+          result => this.searchHelp = result,
+          error => console.error(error)
+        )
+    }
+
   }
 
 }

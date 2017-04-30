@@ -18,7 +18,7 @@ class TopRoute extends BaseRoute{
 
             return 0;
         });
-
+        console.log(top);
         for(let i = 0; i < top.length; i++) {
             result.push(top[i].search);
         }
