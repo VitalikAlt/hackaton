@@ -21,6 +21,9 @@ class Get_keysRoute extends BaseRoute {
                 data = JSON.parse(data);
 
                 for (let key in data) {
+                    if (result.length >= 5)
+                        break;
+
                     const cattedKey = key.substr(0, this.params.searchParam.length);
 
                     if (cattedKey === this.params.searchParam)
@@ -29,7 +32,7 @@ class Get_keysRoute extends BaseRoute {
 
                 count++;
 
-                if (count === folders.length || result.length >= 10)
+                if (count === folders.length || result.length >= 5)
                     return this.complete(result);
             })
         }

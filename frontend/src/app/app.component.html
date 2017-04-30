@@ -12,13 +12,11 @@
 
     <div class="left-block">
       <div class="search">
-        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Type the word..." #searchInput/>
+        <input (keyup)="onSearchInputChanged(searchInput.value)" placeholder="Type the word..." #searchInput list="suggestions"/>
         <button (click)="search(searchInput.value)" class="btn-search">Search</button>
-        <div *ngIf="searchInput.value">
-          <div *ngFor="let str of searchHelp">
-            <span (click)="search(str); searchInput.value=''">{{str}}</span>
-          </div>
-        </div>
+        <datalist id="suggestions" (click)="search(searchInput.value)">
+          <option *ngFor="let str of searchHelp">{{str}}</option>
+        </datalist>
       </div>
 
       <div class="search-result-container">
