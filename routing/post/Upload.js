@@ -3,13 +3,9 @@ const util = require('util');
 const formidable = require('formidable');
 const BaseRoute = require(appRoot + '/routing/BaseRoute');
 
-class SearchRoute extends BaseRoute {
+class UploadRoute extends BaseRoute {
     constructor(core, req, res, params) {
         super(core, req, res, params);
-    }
-
-    get paramNames() {
-        return [];
     }
 
     handle() {
@@ -26,36 +22,40 @@ class SearchRoute extends BaseRoute {
     }
 
     onFileUploaded(path, folderName) {
-        let data = fs.readFileSync(path, 'utf-8');
-        data = data.split('\n');
+        let currentHashFile = {};
+        let currentKey = (data[0])? data[0][0] : '0';
+        const inputFile = this.readAndParseFile(path);
 
-        let currentFile = {};
-        let currentName = (data[0])? data[0][0] : '0';
-        for (let i = 0; i < data.length; i++) {
-            if (currentName === data[i][0]) {
-                this.addKey(currentFile, data[i].split('\t'));
-                continue;
+        for (let i = 0; i < inputFile.length; i++) {
+            if (currentKey !== inputFile[i][0]) {
+                this.createDirectoryIfNotExist(`./base/${folderName}`);
+                fs.writeFileSync(`./base/${folderName}/${currentKey}`, JSON.stringify(currentHashFile));
+                [currentKey, currentHashFile] = [inputFile[i][0], {}];
             }
 
-            try {
-                fs.mkdirSync(`./base/${folderName}`, (err) => {});
-            } catch (err) {}
-
-            fs.writeFileSync(`./base/${folderName}/${currentName}`, JSON.stringify(currentFile));
-            currentName = data[i][0];
-            currentFile = {};
-            this.addKey(currentFile, data[i].split(' \t'));
+            this.addKeyForHashFile(currentHashFile, inputFile[i]);
         }
-
-        this.complete('ok');
     }
 
-    addKey(data, el) {
-        if (!data[el[0]])
-            data[el[0]] = [el[1]];
-        else
-            data[el[0]].push(el[1]);
+    readAndParseFile(path) {
+        const data = fs.readFileSync(path, 'utf-8');
+        return data.split('\n');
+    }
+
+    createDirectoryIfNotExist(path) {
+        try {
+            fs.mkdirSync(path, (err) => {});
+        } catch (err) {}
+    }
+
+    addKeyForHashFile(hashTable, el) {
+        const [key, value] = el.split(' \t');
+
+        if (!hashTable[key])
+            return hashTable[key] = [value];
+
+        hashTable[key].push(value);
     }
 }
 
-module.exports = SearchRoute;
+module.exports = UploadRoute;

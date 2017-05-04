@@ -45,7 +45,7 @@ class Server extends Environment {
     }
 
     get port() {
-        return process.env.NODE_PORT || '8084';
+        return process.env.NODE_PORT || '8080';
     }
 
     get host() {

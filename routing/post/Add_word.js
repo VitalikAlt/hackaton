@@ -1,7 +1,7 @@
 const fs = require('fs');
 const BaseRoute = require(appRoot + '/routing/BaseRoute');
 
-class Add_wordRoute extends BaseRoute {
+class AddWordRoute extends BaseRoute {
     constructor(core, req, res, params) {
         super(core, req, res, params);
     }
@@ -11,31 +11,32 @@ class Add_wordRoute extends BaseRoute {
     }
 
     handle() {
-        let currentName = this.params.key[0];
-
-        try {
-            fs.mkdirSync(`./base/alone`, (err) => {});
-        } catch (err) {}
+        let file;
+        const currentName = this.params.key[0];
+        this.createDirectoryIfNotExist(`./base/alone`);
 
         if (fs.existsSync(`./base/alone/${currentName}`)) {
-            let file = fs.readFileSync(`./base/alone/${currentName}`, 'utf-8');
+            file = fs.readFileSync(`./base/alone/${currentName}`, 'utf-8');
             file = JSON.parse(file);
-            this.addKey(file, [this.params.key, this.params.value])
-        } else {
-            let file = {};
-            this.addKey(file, [this.params.key, this.params.value]);
-            fs.writeFileSync(`./base/alone/${currentName}`, JSON.stringify(file));
         }
 
+        this.addKeyForHashFile(file, this.params);
+        fs.writeFileSync(`./base/alone/${currentName}`, JSON.stringify(file));
         this.complete('ok');
     }
 
-    addKey(data, el) {
-        if (!data[el[0]])
-            data[el[0]] = [el[1]];
-        else
-            data[el[0]].push(el[1]);
+    createDirectoryIfNotExist(path) {
+        try {
+            fs.mkdirSync(path, (err) => {});
+        } catch (err) {}
+    }
+
+    addKeyForHashFile(hashTable, el) {
+        if (!hashTable[el.key])
+            return hashTable[el.key] = [el.value];
+
+        hashTable[el.key].push(el.value);
     }
 }
 
-module.exports = Add_wordRoute;
+module.exports = AddWordRoute;

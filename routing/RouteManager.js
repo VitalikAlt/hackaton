@@ -6,7 +6,6 @@ class RouteManager {
     }
 
     async handle(req, res) {
-        let params = [], err;
         this.core.log.debug(`Get ${req.method} request: ${req.url}`);
         req.sendError = this.sendError.bind(this);
 
@@ -15,25 +14,50 @@ class RouteManager {
             return req.sendError(res, 'UNSUPPORTED_METHOD', req.method);
         }
 
-        let method = new Methods[req.method](req, res);
+        this.createHandler(req, res);
+    }
 
-        if (req.url !== '/upload') {
-            [params, err] = await method.getRequestParams();
+    async createHandler(req, res) {
+        let [pathToHandler, params] = await this.getPathAndRequestParams(req, res);
 
-            if (err) return null;
-        }
-
-        let pathToHandler = method.getPathToHandler(req);
+        if (!pathToHandler)
+            return null;
 
         try {
             const Action = require(appRoot + `/routing/${pathToHandler}`);
             new Action(this.core, req, res, params);
         } catch (err) {
-            if (err.code === "MODULE_NOT_FOUND")
-                return req.sendError(res, "MODULE_NOT_FOUND", req.url);
-
-            req.sendError(res, 'UNKNOWN_ERROR', err);
+            this.completeError(err, req, res);
         }
+    }
+
+    async getPathAndRequestParams(req, res) {
+        let method = new Methods[req.method](req, res);
+
+        let [params, err] = await this.getRequestParams(req, method);
+
+        if (err)
+            return [null, null];
+
+        let pathToHandler = method.getPathToHandler(req);
+
+        return [pathToHandler, params];
+    }
+
+    async getRequestParams(req, method) {
+        let params = [], err;
+
+        if (req.url !== '/upload')
+            [params, err] = await method.getRequestParams();
+
+        return [params, err];
+    }
+
+    completeError(err, req, res) {
+        if (err.code === "MODULE_NOT_FOUND")
+            return req.sendError(res, "MODULE_NOT_FOUND", req.url);
+
+        req.sendError(res, 'UNKNOWN_ERROR', err);
     }
 
     sendError(res, err, params) {

@@ -1,9 +1,11 @@
 const fs = require('fs');
 const BaseRoute = require(appRoot + '/routing/BaseRoute');
 
-class Get_keysRoute extends BaseRoute {
+class GetKeysRoute extends BaseRoute {
     constructor(core, req, res, params) {
         super(core, req, res, params);
+        this.currentFolderNumber = 0;
+        this.MAX_COUNT = 5;
     }
 
     get paramNames() {
@@ -11,32 +13,39 @@ class Get_keysRoute extends BaseRoute {
     }
 
     handle() {
-        let result = [], count = 0;
+        const result = [];
         const folders = fs.readdirSync('./base');
+
+        this.foldersNumber = folders.length;
+
         for(let i = 0; i < folders.length; i++) {
-            fs.readFile(`./base/${folders[i]}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, data) => {
-                if (err)
-                    return console.log(err);
+            this.searchKeys(folders[i], result);
+        }
+    }
 
-                data = JSON.parse(data);
+    searchKeys(folder, result) {
+        fs.readFile(`./base/${folder}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, fileData) => {
+            this.currentFolderNumber++;
 
-                for (let key in data) {
-                    if (result.length >= 5)
-                        break;
+            if (!err && result.length < this.MAX_COUNT)
+                this.pushKeyIfExist(JSON.parse(fileData), result);
 
-                    const cattedKey = key.substr(0, this.params.searchParam.length);
+            if (this.currentFolderNumber === this.foldersNumber || result.length >= this.MAX_COUNT)
+                return this.complete(result);
+        })
+    }
 
-                    if (cattedKey === this.params.searchParam)
-                        result.push(key)
-                }
+    pushKeyIfExist(hashTable, result) {
+        for (let key in hashTable) {
+            if (result.length >= this.MAX_COUNT)
+                break;
 
-                count++;
+            const cattedKey = key.substr(0, this.params.searchParam.length);
 
-                if (count === folders.length || result.length >= 5)
-                    return this.complete(result);
-            })
+            if (cattedKey === this.params.searchParam)
+                result.push(key)
         }
     }
 }
 
-module.exports = Get_keysRoute;
+module.exports = GetKeysRoute;

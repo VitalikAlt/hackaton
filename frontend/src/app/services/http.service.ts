@@ -105,6 +105,4 @@ export class HttpService {
       .map(this.extractData)
       .catch(this.handleError)
   }
-
-
 }

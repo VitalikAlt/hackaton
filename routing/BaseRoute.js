@@ -4,19 +4,17 @@ class BaseRoute {
         this.req = req;
         this.res = res;
         this.params = params;
-        this.checkParams();
+        this.checkParamsAndHandle();
     }
 
-    checkParams() {
+    checkParamsAndHandle() {
         if (!this.paramNames)
             return this.handle();
 
         for (let i = 0; i < this.paramNames.length; i++) {
             if (!this.params || !this.params[this.paramNames[i]]) {
-                this.core.log.warn('BAD_PARAMS: no field ', this.paramNames[i]);
-                this.res.writeHead(400);
-                this.res.end(JSON.stringify(this.core.errors['BAD_PARAMS'](this.paramNames[i])));
-                return;
+                this.sendResponse(this.core.errors['BAD_PARAMS'](this.paramNames[i]), 400);
+                return null;
             }
         }
 
@@ -24,15 +22,16 @@ class BaseRoute {
     }
 
     complete(res, err, message) {
-        if (!res) {
-            this.core.log.debug('Send request responce: ', JSON.stringify({err, message}));
-            this.res.writeHead(400);
-            this.res.end(JSON.stringify({err, message}));
-        }
+        if (!res)
+            return this.sendResponse({err, message}, 400);
 
-        this.core.log.debug('Send request responce: ', JSON.stringify(res));
-        this.res.writeHead(200);
-        this.res.end(JSON.stringify(res));
+        this.sendResponse(res, 200);
+    }
+
+    sendResponse(data, requestCode) {
+        this.core.log.debug('Send request responce: ', JSON.stringify(data));
+        this.res.writeHead(requestCode);
+        this.res.end(JSON.stringify(data));
     }
 }
 

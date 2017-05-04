@@ -4,6 +4,7 @@ const BaseRoute = require(appRoot + '/routing/BaseRoute');
 class SearchRoute extends BaseRoute {
     constructor(core, req, res, params) {
         super(core, req, res, params);
+        this.currentFolderNumber = 0;
         this.added = false;
     }
 
@@ -12,52 +13,47 @@ class SearchRoute extends BaseRoute {
     }
 
     handle() {
-        let result = [], count = 0;
+        const result = [];
         const folders = fs.readdirSync('./base');
+
+        this.foldersNumber = folders.length;
+
         for(let i = 0; i < folders.length; i++) {
-            fs.readFile(`./base/${folders[i]}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, data) => {
-                if (err) {
-                    count++;
+            this.searchDescriptions(folders[i], result);
+        }
+    }
 
-                    if (count === folders.length)
-                        return this.complete(result);
+    searchDescriptions(folder, result) {
+        fs.readFile(`./base/${folder}/${this.params.searchParam[0].toUpperCase()}`, 'utf-8', (err, data) => {
+            this.currentFolderNumber++;
 
-                    return console.log(err);
-                }
+            if (!err)
+                this.pushWordIfExist(JSON.parse(data), result);
 
-                data = JSON.parse(data);
+            if (this.currentFolderNumber === this.foldersNumber)
+                return this.complete(result);
+        })
+    }
 
-                for (let key in data) {
-                    const cattedKey = key.substr(0, this.params.searchParam.length);
+    pushWordIfExist(hashTable, result) {
+        for (let key in hashTable) {
+            const cattedKey = key.substr(0, this.params.searchParam.length);
 
-                    if (cattedKey === this.params.searchParam) {
-                        this.addSearch(this.params.searchParam);
-                        result.push({key: key, value: data[key]})
-                    }
-                }
-
-                count++;
-
-                if (count === folders.length)
-                    return this.complete(result);
-            })
+            if (cattedKey === this.params.searchParam) {
+                this.addSearch(this.params.searchParam);
+                result.push({key, value: hashTable[key]})
+            }
         }
     }
 
     async addSearch(search) {
         if (this.added)
-            return Promise.resolve();
+            return null;
 
         this.added = true;
 
-        const count = await this.core.db.searches.getCount(search);
-        console.log(count);
-
-        if (count) {
-            this.core.db.searches.addCount({search, count: count + 1});
-        } else {
-            this.core.db.searches.addSearch({search, count: 1});
-        }
+        const count = (await this.core.db.searches.getCount(search)) || 0;
+        this.core.db.searches.addCount({search, count: count + 1});
     }
 }
 
