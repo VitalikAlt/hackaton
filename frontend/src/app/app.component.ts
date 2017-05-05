@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService} from './services/http.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import  { SearchResult } from './search-result';
 
@@ -11,7 +11,6 @@ import  { SearchResult } from './search-result';
 })
 export class AppComponent implements OnInit{
 
-  searchResult: SearchResult[]; // overall search results
   searchFirstRow: SearchResult[]; // first row search result
   searchSecondRow: SearchResult[]; // second row search result
 
@@ -76,7 +75,6 @@ export class AppComponent implements OnInit{
     this.httpService.getSearchResult(searchInput)
       .subscribe(result => {
           if (result.length > 0){
-            //this.searchResult = result;
             this.notFound = false;
             this.searchFirstRow = new Array();
             this.searchSecondRow = new Array();
@@ -91,17 +89,10 @@ export class AppComponent implements OnInit{
           }
           else {
             this.notFound = true;
-            //this.searchResult = [];
             this.searchSecondRow = [];
             this.searchFirstRow = [];
           }
         }, error => console.error(error))
-
-
-
-
-
-
   };
 
   getTopFive() : void {
