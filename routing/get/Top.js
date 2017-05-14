@@ -8,6 +8,7 @@ class TopRoute extends BaseRoute{
     async handle() {
         let result = [];
         let top = await this.core.db.searches.getTop(5);
+        console.log(top);
 
         for(let i = 0; i < top.length; i++) {
             result.push(top[i].search);

@@ -53,7 +53,11 @@ class SearchRoute extends BaseRoute {
         this.added = true;
 
         const count = (await this.core.db.searches.getCount(search)) || 0;
-        this.core.db.searches.addCount({search, count: count + 1});
+
+        if (count === 0)
+            this.core.db.searches.addSearch({search, count: count + 1});
+        else
+            this.core.db.searches.addCount({search, count: count + 1});
     }
 }
 
